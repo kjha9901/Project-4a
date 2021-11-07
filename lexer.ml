@@ -107,7 +107,6 @@ let tokenize input =
     
     else raise (InvalidInputException ("INVALID INPUT"))
   in
-  if input=";;" then []
-  else
-    tok 0 input
+  
+  tok 0 input
 ;;

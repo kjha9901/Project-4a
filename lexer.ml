@@ -10,6 +10,7 @@ let tokenize input =
   let re_RParen = Str.regexp ")" in
   let re_Equal = Str.regexp "=" in
   let re_NotEqual = Str.regexp "<>" in
+  let re_Arrow = Str.regexp "->" in
   let re_Greater = Str.regexp ">" in
   let re_Less = Str.regexp "<" in
   let re_GreaterEqual = Str.regexp ">=" in
@@ -30,7 +31,6 @@ let tokenize input =
   let re_In = Str.regexp "in" in
   let re_Rec = Str.regexp "rec" in
   let re_Fun = Str.regexp "fun" in
-  let re_Arrow = Str.regexp "->" in
   let re_DoubleSemi = Str.regexp ";;" in
   
   let re_empty = Str.regexp "[ \n\t]+" in    (* "[ \n\r\x0c\t]+" *)
@@ -82,6 +82,7 @@ let tokenize input =
     else if Str.string_match re_RParen s pos then Tok_RParen::tok (pos+1) s
     else if Str.string_match re_Equal s pos then Tok_Equal::tok (pos+1) s
     else if Str.string_match re_NotEqual s pos then Tok_NotEqual::tok (pos+2) s
+    else if Str.string_match re_Arrow s pos then Tok_Arrow::tok (pos+2) s
     else if Str.string_match re_Greater s pos then Tok_Greater::tok (pos+1) s
     else if Str.string_match re_Less s pos then Tok_Less::tok (pos+1) s
     else if Str.string_match re_GreaterEqual s pos then Tok_GreaterEqual::tok (pos+2) s
@@ -102,7 +103,6 @@ let tokenize input =
     else if Str.string_match re_In s pos then Tok_In::tok (pos+2) s
     else if Str.string_match re_Rec s pos then Tok_Rec::tok (pos+3) s
     else if Str.string_match re_Fun s pos then Tok_Fun::tok (pos+3) s
-    else if Str.string_match re_Arrow s pos then Tok_Arrow::tok (pos+2) s
     else if Str.string_match re_DoubleSemi s pos then Tok_DoubleSemi::tok (pos+2) s
     
     else raise (InvalidInputException ("INVALID INPUT"))

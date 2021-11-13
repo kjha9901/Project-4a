@@ -297,29 +297,34 @@ let rec parse_expr toks =
 
 (* Part 3: Parsing mutop *)
 
-let rec parse_mutopDoubleSemi toks =
+let rec parse_mutopPrime toks =
   match lookahead toks with
   
   | Some Tok_DoubleSemi ->
     let tok2 = match_token toks Tok_DoubleSemi in
-    (toks2, NoOp)
+    (tok2, NoOp)
   
   | Some Tok_Def ->
     let tok2 = match_token toks Tok_Def in
     (match (lookahead tok2) with
     | Some Tok_ID(id) ->
       let tok3 = match_token tok2 (Tok_ID(id)) in
+      let tok4 = match_token tok3 (Tok_Equal) in
+      let (tok5, expr1) = parse_expr tok4 in
+      let tok6 = match_token tok5 Tok_DoubleSemi in
+      (tok6, Def(id, expr1))
     | _ -> raise (InvalidInputException("Invalid Tok_Def input")))
     
-  | _ -> parse_expr toks
-
-and parse_Mutop toks =
+  | _ ->
+    let (tok2, expr) = parse_expr toks in
+    let tokEnd = match_token tok2 Tok_DoubleSemi in
+    (tokEnd,Expr(expr))
 
 
 ;;
 
 let rec parse_mutop toks = 
-  parse_mutopDoubleSemi toks
+  parse_mutopPrime toks
 ;;
 
 
